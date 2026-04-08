@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Идеальный вечер</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --rose:    #f9a8c9;
+      --rose-d:  #f472b6;
+      --blush:   #fce7f3;
+      --cream:   #fff7f0;
+      --peach:   #fddcb5;
+      --lilac:   #e9d5ff;
+      --lavd:    #c4b5fd;
+      --mint:    #bbf7d0;
+      --mintd:   #4ade80;
+      --text:    #3b1f3a;
+      --muted:   #7c5a7e;
+      --card:    rgba(255,255,255,0.72);
+      --glass:   rgba(255,255,255,0.55);
+      --line:    rgba(255,255,255,0.85);
+      --soft-shadow: 0 20px 50px rgba(180,100,150,0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: "Nunito", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse 900px 500px at -5% -10%, #fff0f6 0%, transparent 60%),
+        radial-gradient(ellipse 700px 400px at 105% 5%,  #f3eeff 0%, transparent 60%),
+        radial-gradient(ellipse 600px 400px at 100% 100%, #fff0e5 0%, transparent 60%),
+        linear-gradient(160deg, #fff4f9 0%, #f5edff 50%, #fff5eb 100%);
+      overflow-x: hidden;
+    }
+
+    /* ────────────── SPLASH ────────────── */
+    .splash {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      background: linear-gradient(160deg, #fff0f8 0%, #f5edff 50%, #fff5eb 100%);
+      transition: opacity 0.7s ease, visibility 0.7s ease;
+    }
+
+    .splash.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      width: min(340px, calc(100vw - 32px));
+      background: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.98);
+      border-radius: 30px;
+      padding: 28px 20px 22px;
+      box-shadow: 0 22px 55px rgba(180,100,150,0.16);
+      backdrop-filter: blur(10px);
+      text-align: center;
+    }
+
+    .splash-inner img {
+      width: 150px;
+      height: 150px;
+      border-radius: 20px;
+      border: 2px solid rgba(255,255,255,0.95);
+      box-shadow: 0 10px 28px rgba(244,114,182,0.22);
+      object-fit: cover;
+    }
+
+    .splash-hello {
+      margin: 10px 0 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #be185d;
+    }
+
+    .splash-bar-wrap {
+      margin-top: 14px;
+      width: 100%;
+      height: 7px;
+      border-radius: 999px;
+      background: #fce7f3;
+      overflow: hidden;
+    }
+
+    .splash-bar-fill {
+      height: 100%;
+      width: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--rose-d), var(--lavd));
+      animation: load 2.5s ease forwards;
+    }
+
+    .splash-label {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: #9d6faa;
+      font-weight: 500;
+    }
+
+    @keyframes load { to { width: 100%; } }
+
+    /* ────────────── PAGE SHELL ────────────── */
+    #app {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+    }
+
+    .shell {
+      width: min(480px, 100%);
+      min-height: min(92vh, 820px);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      box-shadow: var(--soft-shadow);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* subtle blob inside card */
+    .shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(300px 220px at 85% 12%, rgba(249,168,201,0.22), transparent 70%),
+        radial-gradient(280px 200px at 10% 88%, rgba(233,213,255,0.22), transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ────────────── TOPBAR ────────────── */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 20px 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .chip {
+      font-size: 12px;
+      font-weight: 700;
+      color: #be185d;
+      background: rgba(252,231,243,0.9);
+      border: 1px solid rgba(255,255,255,0.98);
+      border-radius: 999px;
+      padding: 6px 12px;
+      letter-spacing: 0.01em;
+    }
+
+    .step-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #b889c3;
+    }
+
+    /* ────────────── PROGRESS BAR (thin line) ────────────── */
+    .progress-line {
+      height: 4px;
+      margin: 0 20px;
+      border-radius: 999px;
+      background: rgba(249,168,201,0.2);
+      overflow: hidden;
+      position: relative;
+      z-index: 2;
+    }
+
+    .progress-line-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--rose-d), var(--lavd));
+      transition: width 0.55s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    /* ────────────── SLIDES AREA ────────────── */
+    .slides-wrap {
+      flex: 1;
+      position: relative;
+      padding: 10px 16px 8px;
+      z-index: 1;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 10px 16px 8px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 22px 20px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      opacity: 0;
+      transform: translateX(28px) scale(0.98);
+      pointer-events: none;
+      transition: opacity 0.52s cubic-bezier(0.22,1,0.36,1),
+                  transform 0.52s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      pointer-events: auto;
+    }
+
+    /* ────────────── TYPOGRAPHY ────────────── */
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.5rem, 5.5vw, 2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .slide p {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(0.97rem, 3.2vw, 1.04rem);
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    /* ────────────── CAT GIF on slide 1 ────────────── */
+    .cat-box {
+      margin-top: 6px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .cat-box img {
+      width: min(140px, 44vw);
+      height: auto;
+      border-radius: 18px;
+      border: 2px solid rgba(255,255,255,0.95);
+      box-shadow: 0 12px 28px rgba(244,114,182,0.18);
+    }
+
+    /* ────────────── LIST ────────────── */
+    .soft-list {
+      margin: 10px 0 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .soft-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: clamp(0.96rem, 3vw, 1.02rem);
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .soft-list .ico {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: var(--blush);
+      display: grid;
+      place-items: center;
+      font-size: 15px;
+      flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.95);
+      box-shadow: 0 3px 8px rgba(244,114,182,0.14);
+    }
+
+    /* ────────────── RESULT CAT ────────────── */
+    .result-cat {
+      display: none;
+      width: min(160px, 50vw);
+      border-radius: 18px;
+      border: 2px solid rgba(255,255,255,0.95);
+      box-shadow: 0 12px 28px rgba(244,114,182,0.2);
+      margin-top: 10px;
+    }
+
+    .result-cat.show { display: block; }
+
+    .status {
+      min-height: 22px;
+      color: #15803d;
+      font-size: 0.97rem;
+      font-weight: 700;
+      line-height: 1.45;
+      margin-top: 6px;
+    }
+
+    /* ────────────── BUTTONS ────────────── */
+    .slide-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      min-height: 52px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 16px;
+      padding: 15px 18px;
+      font-family: "Nunito", sans-serif;
+      font-size: 0.98rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      width: 100%;
+      color: #fff;
+      transition: transform 0.18s ease, filter 0.18s ease;
+    }
+
+    .btn:hover   { filter: brightness(1.04); transform: translateY(-1px); }
+    .btn:active  { transform: scale(0.975); }
+
+    .btn-next {
+      background: linear-gradient(135deg, #f472b6, #a855f7);
+      box-shadow: 0 10px 22px rgba(244,114,182,0.32);
+    }
+
+    .btn-accept {
+      background: linear-gradient(135deg, #4ade80, #22c55e);
+      box-shadow: 0 10px 22px rgba(74,222,128,0.28);
+    }
+
+    .btn-decline {
+      background: linear-gradient(135deg, #f87171, #ef4444);
+      box-shadow: 0 10px 22px rgba(239,68,68,0.24);
+      touch-action: none;
+    }
+
+    /* ────────────── DOTS ────────────── */
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 0 max(16px, calc(env(safe-area-inset-bottom) + 6px));
+      position: relative;
+      z-index: 2;
+    }
+
+    .dots span {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(200,160,210,0.35);
+      transition: all 0.38s ease;
+    }
+
+    .dots span.active {
+      width: 22px;
+      background: linear-gradient(90deg, var(--rose-d), var(--lavd));
+    }
+
+    /* ────────────── FADE-UP TEXT ────────────── */
+    .fu  { opacity: 0; transform: translateY(16px); animation: fuA 0.6s ease forwards; }
+    .fu2 { animation-delay: 0.08s; }
+    .fu3 { animation-delay: 0.16s; }
+    .fu4 { animation-delay: 0.24s; }
+
+    @keyframes fuA {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ────────────── RESPONSIVE ────────────── */
+
+    /* desktop — wider shell, more air */
+    @media (min-width: 600px) {
+      .shell {
+        min-height: min(86vh, 760px);
+        border-radius: 36px;
+      }
+      h1 { font-size: 2.05rem; }
+    }
+
+    /* mobile — edge-to-edge feel */
+    @media (max-width: 430px) {
+      #app { padding: 0; }
+      .shell {
+        width: 100%;
+        min-height: 100dvh;
+        border-radius: 0;
+        border: none;
+      }
+      .topbar { padding: max(20px, env(safe-area-inset-top)) 16px 8px; }
+      .slide { inset: 10px 12px 6px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SPLASH -->
+  <section class="splash" id="splash" aria-live="polite">
+    <div class="splash-inner">
+      <img
+        src="https://media.giphy.com/media/ICOgUNjpvO0PC/giphy.gif"
+        alt="Котик машет лапкой"
+        onerror="this.src='https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif'"
+      />
+      <p class="splash-hello">Котик уже машет тебе лапкой 🐾</p>
+      <div class="splash-bar-wrap" aria-hidden="true">
+        <div class="splash-bar-fill"></div>
+      </div>
+      <p class="splash-label">Настраиваем идеальный вечер...</p>
+    </div>
+  </section>
+
+  <!-- APP -->
+  <main id="app">
+    <section class="shell">
+
+      <header class="topbar">
+        <span class="chip">Evening Planner 🌸</span>
+        <span class="step-label" id="stepLabel">1 из 4</span>
+      </header>
+
+      <div class="progress-line">
+        <div class="progress-line-fill" id="progressFill" style="width:25%"></div>
+      </div>
+
+      <div class="slides-wrap">
+
+        <!-- SLIDE 1 -->
+        <article class="slide active">
+          <div>
+            <h1 class="fu">Привет,&nbsp;Алексеевна&nbsp;🩷</h1>
+            <p class="fu fu2">
+              Система зафиксировала подозрительно высокий уровень зевков в чате.
+              Пора это исправлять.
+            </p>
+            <div class="cat-box fu fu3">
+              <img
+                src="https://media.giphy.com/media/ICOgUNjpvO0PC/giphy.gif"
+                alt="Котик здоровается"
+                onerror="this.src='https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif'"
+              />
+            </div>
+          </div>
+          <div class="slide-actions">
+            <button class="btn btn-next next-btn">Посмотреть решение ✨</button>
+          </div>
+        </article>
+
+        <!-- SLIDE 2 -->
+        <article class="slide">
+          <div>
+            <h1 class="fu">План на завтра 📋</h1>
+            <p class="fu fu2">Никаких сложных схем. Просто свежий воздух и хороший кофе.</p>
+            <ul class="soft-list fu fu3">
+              <li><span class="ico">🗺️</span><span>Прогулка в [Впиши свой район]</span></li>
+              <li><span class="ico">🧤</span><span>Те самые винтажные перчатки</span></li>
+              <li><span class="ico">✨</span><span>0% лапши на ушах</span></li>
+            </ul>
+          </div>
+          <div class="slide-actions">
+            <button class="btn btn-next next-btn">Далее 💫</button>
+          </div>
+        </article>
+
+        <!-- SLIDE 3 -->
+        <article class="slide">
+          <div>
+            <h1 class="fu">Когда и где? 🕰️</h1>
+            <p class="fu fu2">
+              Завтра (Четверг). Ровно&nbsp;19:30.<br/>У твоего подъезда.
+            </p>
+          </div>
+          <div class="slide-actions">
+            <button class="btn btn-next next-btn">Последний шаг 🌙</button>
+          </div>
+        </article>
+
+        <!-- SLIDE 4 -->
+        <article class="slide">
+          <div>
+            <h1 class="fu">Твой выбор? 🌸</h1>
+            <p class="fu fu2">Отказ не предусмотрен архитектурой приложения.</p>
+            <img
+              class="result-cat fu fu3"
+              id="resultCat"
+              src="https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif"
+              alt="Кот с сердечками"
+            />
+            <p class="status fu fu4" id="statusText"></p>
+          </div>
+          <div class="slide-actions" id="finalActions">
+            <button class="btn btn-accept" id="acceptBtn">ПОГНАЛИ 🚀</button>
+            <button class="btn btn-decline" id="declineBtn">БУДУ ВРЕДНИЧАТЬ 😤</button>
+          </div>
+        </article>
+
+      </div>
+
+      <footer class="dots" id="dots" aria-label="Навигация по слайдам">
+        <span class="active"></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </footer>
+
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script>
+    const splash       = document.getElementById("splash");
+    const slides       = Array.from(document.querySelectorAll(".slide"));
+    const nextBtns     = document.querySelectorAll(".next-btn");
+    const dots         = Array.from(document.querySelectorAll("#dots span"));
+    const stepLabel    = document.getElementById("stepLabel");
+    const progressFill = document.getElementById("progressFill");
+    const acceptBtn    = document.getElementById("acceptBtn");
+    const declineBtn   = document.getElementById("declineBtn");
+    const finalActions = document.getElementById("finalActions");
+    const statusText   = document.getElementById("statusText");
+    const resultCat    = document.getElementById("resultCat");
+
+    let cur = 0;
+    let declining = false;
+
+    // Splash → hide after 2.5s
+    setTimeout(() => splash.classList.add("hidden"), 2500);
+
+    // --- Slide logic ---
+    function replayAnimations(slide) {
+      slide.querySelectorAll(".fu").forEach(el => {
+        el.style.animation = "none";
+        void el.offsetWidth;
+        el.style.animation = "";
+      });
+    }
+
+    function goTo(index) {
+      slides[cur].classList.remove("active");
+      cur = index;
+      slides[cur].classList.add("active");
+      replayAnimations(slides[cur]);
+
+      dots.forEach((d, i) => d.classList.toggle("active", i === cur));
+      stepLabel.textContent = (cur + 1) + " из " + slides.length;
+      progressFill.style.width = ((cur + 1) / slides.length * 100) + "%";
+    }
+
+    nextBtns.forEach(btn => btn.addEventListener("click", () => {
+      if (cur < slides.length - 1) goTo(cur + 1);
+    }));
+
+    // --- Decline button runs away ---
+    function rand(a, b) { return Math.random() * (b - a) + a; }
+
+    function runAway() {
+      if (cur !== slides.length - 1) return;
+      if (!declining) {
+        declineBtn.style.position = "fixed";
+        declineBtn.style.zIndex   = "200";
+        declining = true;
+      }
+      const m = 14;
+      declineBtn.style.left = rand(m, window.innerWidth  - declineBtn.offsetWidth  - m) + "px";
+      declineBtn.style.top  = rand(m, window.innerHeight - declineBtn.offsetHeight - m) + "px";
+    }
+
+    declineBtn.addEventListener("mouseenter", runAway);
+    declineBtn.addEventListener("touchstart", e => { e.preventDefault(); runAway(); }, { passive: false });
+
+    // --- Confetti ---
+    function boom() {
+      const shared = { spread: 80, ticks: 260, gravity: 0.85, decay: 0.93, startVelocity: 28 };
+      const colors = ["#f472b6","#e879f9","#a78bfa","#60a5fa","#34d399","#fbbf24","#ffffff"];
+      confetti({ ...shared, particleCount: 100, origin: { x: 0.5,  y: 0.65 }, colors });
+      confetti({ ...shared, particleCount: 80,  angle: 55,  origin: { x: 0.1,  y: 0.65 }, colors });
+      confetti({ ...shared, particleCount: 80,  angle: 125, origin: { x: 0.9,  y: 0.65 }, colors });
+    }
+
+    acceptBtn.addEventListener("click", () => {
+      boom();
+      resultCat.classList.add("show");
+      statusText.textContent = "Заявка принята! Буду в 19:30. Не опаздывай! 💕";
+    });
+  </script>
+</body>
+</html>
