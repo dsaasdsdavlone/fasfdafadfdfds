@@ -269,6 +269,21 @@
       color: var(--ink);
       word-break: break-word;
     }
+    .map-link {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(184, 74, 122, 0.35);
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .map-link:hover {
+      border-bottom-color: var(--rose-deep);
+      color: var(--rose-deep);
+    }
+    .map-link:focus-visible {
+      outline: 2px solid var(--rose-deep);
+      outline-offset: 2px;
+      border-bottom-color: transparent;
+    }
 
     /* step rail */
     .rail {
@@ -329,36 +344,183 @@
       color: var(--ink-soft);
     }
 
-    .info-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
+    /* Слайд «когда/где» — карточка-маршрут (editorial UI) */
+    .meet-card {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      align-items: center;
     }
-    @media (max-width: 360px) {
-      .info-grid { grid-template-columns: 1fr; }
+    .meet-card__surface {
+      width: 100%;
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      border-radius: 24px;
+      background:
+        linear-gradient(168deg, rgba(255,255,255,0.98) 0%, rgba(255,252,254,0.9) 40%, rgba(250,246,255,0.82) 100%);
+      border: 1px solid rgba(255,255,255,0.94);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.9) inset,
+        0 20px 50px rgba(45,36,56,0.072),
+        0 0 0 1px rgba(45,36,56,0.02);
+      overflow: hidden;
     }
-    .info-cell {
-      background: rgba(255,255,255,0.75);
-      border: 1px solid rgba(255,255,255,0.9);
-      border-radius: 14px;
-      padding: 11px 13px;
+    .meet-card__rail {
+      flex-shrink: 0;
+      width: 5px;
+      margin: 18px 0 18px 16px;
+      border-radius: 999px;
+      align-self: center;
+      min-height: 112px;
+      background: linear-gradient(
+        180deg,
+        var(--rose-deep) 0%,
+        #a87898 38%,
+        var(--lilac) 72%,
+        rgba(123, 201, 168, 0.55) 100%
+      );
+      opacity: 0.92;
+    }
+    .meet-card__body {
+      flex: 1;
+      min-width: 0;
+      padding: 20px 18px 20px 14px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      box-shadow: 0 4px 14px rgba(45,36,56,0.05);
+      gap: 0;
     }
-    .info-l {
+    .meet-card__head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 12px;
+      margin-bottom: 18px;
+    }
+    .meet-card__pill {
+      padding: 4px 10px;
+      border-radius: 999px;
       font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.11em;
+      font-weight: 800;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--rose-deep);
+      background: rgba(184, 74, 122, 0.1);
+      border: 1px solid rgba(184, 74, 122, 0.14);
     }
-    .info-v {
-      font-size: clamp(0.9rem, 3.3vw, 0.98rem);
+    .meet-card__weekday {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      opacity: 0.88;
+    }
+    .meet-card__kicker {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+      opacity: 0.72;
+    }
+    .meet-card__time-block {
+      margin-bottom: 22px;
+    }
+    .slide .meet-card__clock {
+      margin: 0;
+      font-family: "Fraunces", serif;
+      font-size: clamp(2.65rem, 13vw, 3.45rem);
+      font-weight: 600;
+      line-height: 0.92;
+      letter-spacing: -0.035em;
+      background: linear-gradient(115deg, #231a2e 0%, #5c3d58 48%, #9c4872 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .meet-card__stops {
+      list-style: none;
+      margin: 0;
+      padding: 0 0 0 22px;
+      position: relative;
+    }
+    .meet-card__stops::before {
+      content: "";
+      position: absolute;
+      left: 7px;
+      top: 11px;
+      bottom: 11px;
+      width: 1px;
+      background: linear-gradient(
+        180deg,
+        rgba(184, 74, 122, 0.28) 0%,
+        rgba(168, 152, 232, 0.35) 100%
+      );
+    }
+    .meet-card__stop {
+      position: relative;
+      padding: 11px 0;
+    }
+    .meet-card__stop:first-child {
+      padding-top: 0;
+    }
+    .meet-card__stop:last-child {
+      padding-bottom: 0;
+    }
+    .meet-card__stop-dot {
+      position: absolute;
+      left: -22px;
+      top: 13px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--rose-deep);
+      box-shadow:
+        0 0 0 3px rgba(255, 255, 255, 0.98),
+        0 2px 8px rgba(184, 74, 122, 0.28);
+    }
+    .meet-card__stop:first-child .meet-card__stop-dot {
+      top: 3px;
+    }
+    .meet-card__stop:last-child .meet-card__stop-dot {
+      top: 14px;
+      background: rgba(255, 255, 255, 0.98);
+      border: 2px solid var(--lilac);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.98);
+    }
+    .slide .meet-card__stop-text {
+      margin: 5px 0 0;
+      font-size: clamp(0.94rem, 3.5vw, 1.04rem);
+      font-weight: 600;
+      line-height: 1.45;
+      color: var(--ink);
+    }
+    .slide .meet-card__stop-text strong {
+      font-weight: 700;
+    }
+    .slide .meet-card__stop-text em {
+      font-family: "Fraunces", serif;
+      font-style: italic;
       font-weight: 600;
       color: var(--ink);
-      line-height: 1.35;
+    }
+    .slide .meet-card__stop-text .map-link em {
+      color: inherit;
+    }
+    .slide .meet-card__stop-note {
+      margin: 6px 0 0;
+      font-size: clamp(0.84rem, 3.1vw, 0.92rem);
+      font-weight: 500;
+      line-height: 1.45;
+      color: var(--ink-soft);
+    }
+    .slide--meet .note-soft {
+      margin-top: 6px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(45, 36, 56, 0.07);
     }
 
     h1 {
@@ -660,8 +822,8 @@
             <span class="hdr-title">Приглашение</span>
           </div>
           <div class="hdr-badge">
-            <div class="kv"><span class="kv-k">Когда</span><span class="kv-v">Четверг · 19:00</span></div>
-            <div class="kv"><span class="kv-k">Где</span><span class="kv-v">м. Китай-город → Пестики-Тычинки Bar</span></div>
+            <div class="kv"><span class="kv-k">Когда</span><span class="kv-v">Сегодня · 19:00</span></div>
+            <div class="kv"><span class="kv-k">Где</span><span class="kv-v">м. Китай-город → <a class="map-link" href="https://yandex.com/maps/-/CCU06DdutC" target="_blank" rel="noopener noreferrer">Пестики-Тычинки Bar</a></span></div>
           </div>
         </header>
 
@@ -678,7 +840,7 @@
             <div class="slide-body">
               <h1 class="fu d1">Привет, Алексеевна</h1>
               <p class="lead fu d2">
-                Критический уровень зевков зафиксирован — вызвали пушистого <span class="hi">антикризисного менеджера</span>.
+                Критический уровень зевков зафиксирован — вызвали пушистого <span class="hi">менеджера</span>.
               </p>
               <div class="cat-wrap fu d3">
                 <img
@@ -700,7 +862,7 @@
               <p class="lead fu d2">Без схем. Как всегда спонтанно.</p>
               <ul class="nice-list fu d3">
                 <li><span class="e">📍</span><span><strong>Китай-город</strong> · встреча в <strong>19:00</strong></span></li>
-                <li><span class="e">🍸</span><span><strong>Пестики-Тычинки Bar</strong></span></li>
+                <li><span class="e">🍸</span><span><strong><a class="map-link" href="https://yandex.com/maps/-/CCU06DdutC" target="_blank" rel="noopener noreferrer">Пестики-Тычинки Bar</a></strong></span></li>
                 <li><span class="e">🚫</span><span>Лапши на ушах — ноль</span></li>
                 <li><span class="e">🧤</span><span>Винтажные перчатки — да</span></li>
                 <li><span class="e">🐆</span><span>Леопард / зебра — по желанию</span></li>
@@ -711,14 +873,36 @@
             </div>
           </article>
 
-          <article class="slide">
+          <article class="slide slide--meet">
             <div class="slide-body">
-              <h1 class="fu d1">Когда и где</h1>
-              <div class="info-grid fu d2">
-                <div class="info-cell"><span class="info-l">День</span><span class="info-v">Завтра, четверг</span></div>
-                <div class="info-cell"><span class="info-l">Время</span><span class="info-v">19:00</span></div>
-                <div class="info-cell"><span class="info-l">Метро</span><span class="info-v">Китай-город</span></div>
-                <div class="info-cell"><span class="info-l">Бар</span><span class="info-v">Пестики-Тычинки Bar</span></div>
+              <h1 class="fu d1">Четверг · 19:00</h1>
+              <div class="meet-card fu d2">
+                <div class="meet-card__surface" role="group" aria-label="Время и маршрут встречи">
+                  <div class="meet-card__rail" aria-hidden="true"></div>
+                  <div class="meet-card__body">
+                    <div class="meet-card__head">
+                      <span class="meet-card__pill">Сегодня</span>
+                      <span class="meet-card__weekday">Четверг</span>
+                    </div>
+                    <div class="meet-card__time-block">
+                      <span class="meet-card__kicker">Время</span>
+                      <p class="meet-card__clock">19:00</p>
+                    </div>
+                    <ul class="meet-card__stops">
+                      <li class="meet-card__stop">
+                        <span class="meet-card__stop-dot" aria-hidden="true"></span>
+                        <span class="meet-card__kicker">Сбор</span>
+                        <p class="meet-card__stop-text">Жду у выхода <strong>Китай-город</strong></p>
+                      </li>
+                      <li class="meet-card__stop">
+                        <span class="meet-card__stop-dot" aria-hidden="true"></span>
+                        <span class="meet-card__kicker">Дальше</span>
+                        <p class="meet-card__stop-text"><a class="map-link" href="https://yandex.com/maps/-/CCU06DdutC" target="_blank" rel="noopener noreferrer"><em>Пестики-Тычинки Bar</em></a></p>
+                        <p class="meet-card__stop-note">Без лишней пешей эпопеи.</p>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
               <p class="note-soft fu d3">Не опаздывай — кот запомнит 🐱</p>
             </div>
@@ -736,7 +920,7 @@
                   src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzl6dWx1ZWhncmdsajg3bGZhdG56a3prY2FudDZ0ajdjOHdqaGQ5YiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/901mxGLGQN2PyCQpoc/giphy.gif"
                   alt=""
                 />
-                <p>Подумай ещё раз</p>
+                <p id="declineHintText">Подумай ещё раз.</p>
               </div>
               <img
                 class="result-cat fu d3"
@@ -775,10 +959,31 @@
     const statusMsg = document.getElementById("statusMsg");
     const resultCat = document.getElementById("resultCat");
     const declineHint = document.getElementById("declineHint");
+    const declineHintText = document.getElementById("declineHintText");
+
+    const DECLINE_PHRASES = [
+      "Подумай ещё раз.",
+      "Не заставляй меня это делать.",
+      "Не вынуждай меня включать сценарий, который никому не понравится.",
+      "Он просто спрашивает: уверена?",
+      "Ну не надо, правда — мне и так жалко эту кнопку.",
+      "Ладно, держи ещё шанс. Но не злоупотребляй.",
+      "Окей, этот клик стираем. Следующий — уже на твоей совести.",
+      "Ладно-ладно, ещё одну передышку. Но потом я серьёзно начну нервничать.",
+      "Хорошо, снисхожу. Только не провоцируй дальше, ладно?",
+      "Пущу мимо ушей. Но запас дружелюбия не бесконечный — имей в виду.",
+    ];
 
     let cur = 0;
     let fleeing = false;
     let declineWarnShown = false;
+    let declinePhraseIx = 0;
+
+    function setDeclinePhrase() {
+      if (!declineHintText) return;
+      const i = declinePhraseIx % DECLINE_PHRASES.length;
+      declineHintText.textContent = DECLINE_PHRASES[i];
+    }
 
     /** Координаты видимой области (в т.ч. Safari с адресной строкой) */
     function viewportRect() {
@@ -813,6 +1018,7 @@
 
     function hideDeclineHint() {
       declineWarnShown = false;
+      declinePhraseIx = 0;
       if (!declineHint) return;
       declineHint.classList.remove("vis");
       declineHint.setAttribute("hidden", "");
@@ -854,6 +1060,7 @@
     }
 
     function showDeclineWarning() {
+      setDeclinePhrase();
       declineHint.removeAttribute("hidden");
       declineHint.classList.add("vis");
     }
@@ -894,9 +1101,13 @@
       if (cur !== slides.length - 1) return;
       if (!declineWarnShown) {
         declineWarnShown = true;
+        declinePhraseIx = 0;
         showDeclineWarning();
+        fleeReal();
         return;
       }
+      declinePhraseIx += 1;
+      setDeclinePhrase();
       fleeReal();
     }
 
